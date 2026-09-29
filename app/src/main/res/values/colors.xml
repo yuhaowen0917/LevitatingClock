@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用图标底色 -->
+    <color name="ic_launcher_background">#0E1116</color>
+
+    <!-- 主色调：荧光绿，与悬浮窗时间文字一致 -->
+    <color name="accent_green">#00E676</color>
+    <color name="bg_dark">#0E1116</color>
+
+    <!-- 悬浮窗默认配色 -->
+    <color name="overlay_bg">#CC000000</color>
+    <color name="overlay_text_time">#00FF00</color>
+    <color name="overlay_text_offset">#FFFFFF</color>
+
+    <!-- 校准状态分级配色 -->
+    <color name="status_ok">#00E676</color>
+    <color name="status_stale">#FFC107</color>
+    <color name="status_failed">#FF5252</color>
+</resources>

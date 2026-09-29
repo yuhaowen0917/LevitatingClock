@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TickSync</string>
+
+    <!-- 底部导航 -->
+    <string name="tab_clock">时钟</string>
+    <string name="tab_sources">时间源</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- 时钟页 -->
+    <string name="clock_status_calibrated">已校准</string>
+    <string name="clock_status_stale">超过 5 分钟未同步</string>
+    <string name="clock_status_offline">离线校准中</string>
+    <string name="clock_status_failed">未同步</string>
+    <string name="clock_status_device">设备时间（未校准）</string>
+    <string name="clock_action_sync_now">立即校准</string>
+    <string name="clock_action_syncing">校准中…</string>
+    <string name="clock_action_open_overlay">开启悬浮窗</string>
+    <string name="clock_action_close_overlay">关闭悬浮窗</string>
+    <string name="clock_label_offset">时间偏差</string>
+    <string name="clock_label_source">同步源</string>
+    <string name="clock_label_rtt">网络延迟</string>
+    <string name="clock_label_precision">精度</string>
+    <string name="clock_label_last_sync">上次同步</string>
+    <string name="clock_value_unknown">—</string>
+    <string name="clock_value_second_level">秒级</string>
+    <string name="clock_footer_hint">显示时间为经多源校准的标准时间 · 未校准前显示本机时间</string>
+    <string name="overlay_permission_desc">悬浮窗权限用于在其他应用上层显示校准时间，需要你手动开启。本应用仅用该权限显示时间，不读取、不操作其他应用。</string>
+
+    <!-- 倒计时 -->
+    <string name="countdown_title">倒计时</string>
+    <string name="countdown_not_set">未启用</string>
+    <string name="countdown_target_at">每天 %1$s</string>
+    <string name="countdown_tap_to_set">点击设置开抢时刻</string>
+    <string name="countdown_label">名称</string>
+    <string name="countdown_label_hint">如：大麦 · 周五场</string>
+    <string name="countdown_time_label">开抢时刻（每天）</string>
+    <string name="countdown_unit_hour">时</string>
+    <string name="countdown_unit_minute">分</string>
+    <string name="countdown_unit_second">秒</string>
+    <string name="countdown_hint">归零时震动提醒一次，并自动转入下一天。</string>
+    <string name="countdown_disable">停用</string>
+
+    <!-- 时间源页 -->
+    <string name="time_source_hint">校准所用的时间来源。NTP 与平台接口精度最高；设备时间不具备校准意义，仅作兜底。</string>
+    <string name="time_source_add">添加时间源</string>
+    <string name="time_source_edit">编辑时间源</string>
+    <string name="time_source_reset">恢复默认</string>
+    <string name="time_source_type_ntp">NTP 服务器</string>
+    <string name="time_source_type_http">平台接口</string>
+    <string name="time_source_name_label">名称</string>
+    <string name="time_source_name_hint">便于识别的名字</string>
+    <string name="time_source_endpoint_label">地址</string>
+    <string name="time_source_endpoint_hint_ntp">如 ntp.example.com</string>
+    <string name="time_source_endpoint_hint_http">如 https://example.com/time</string>
+    <string name="time_source_endpoint_invalid">地址格式不正确</string>
+    <string name="time_source_device_detail">本机系统时间，不参与多源融合</string>
+    <string name="time_source_footer">平台源默认关闭。开启后本应用会向对应平台发起请求，抢票前按需打开即可。</string>
+
+    <!-- 设置页 -->
+    <string name="settings_section_overlay">悬浮窗</string>
+    <string name="settings_section_permission">权限状态</string>
+    <string name="settings_section_about">关于</string>
+    <string name="settings_auto_sync_interval">自动校准间隔</string>
+    <string name="settings_overlay_size">悬浮窗尺寸</string>
+    <string name="settings_overlay_alpha">悬浮窗透明度</string>
+    <string name="settings_show_millis">显示毫秒</string>
+    <string name="settings_restore_on_boot">开机自动恢复悬浮窗</string>
+    <string name="settings_overlay_permission">悬浮窗权限</string>
+    <string name="settings_notification_permission">通知权限</string>
+    <string name="settings_permission_granted">已开启</string>
+    <string name="settings_permission_denied">未开启</string>
+    <string name="settings_permission_go">去开启</string>
+    <string name="settings_version">版本</string>
+
+    <string name="size_small">小（时:分:秒）</string>
+    <string name="size_medium">中（含毫秒）</string>
+    <string name="size_large">大（含倒计时与状态）</string>
+    <string name="size_short_small">小</string>
+    <string name="size_short_medium">中</string>
+    <string name="size_short_large">大</string>
+
+    <string name="settings_passthrough">穿透模式</string>
+    <string name="settings_passthrough_desc">开启后悬浮窗不接收任何触摸，完全不影响下层操作</string>
+    <string name="settings_passthrough_warning">调整位置时请先关闭</string>
+
+    <string name="action_cancel">取消</string>
+    <string name="action_confirm">确定</string>
+    <string name="action_delete">删除</string>
+
+    <string name="interval_minutes">%1$d 分钟</string>
+
+    <!-- 厂商引导 -->
+    <string name="rom_guide_title">本机为 %1$s，需额外设置</string>
+    <string name="rom_guide_miui">请同时开启「显示悬浮窗」与「后台弹出界面」</string>
+    <string name="rom_guide_huawei">请开启「悬浮窗」与「后台弹窗」，并关闭电池优化</string>
+    <string name="rom_guide_oppo">请开启「悬浮窗」与「后台弹出界面」</string>
+    <string name="rom_guide_vivo">请开启「悬浮窗」与「后台弹出界面」</string>
+    <string name="rom_guide_battery">建议将本应用加入电池优化白名单，并在多任务界面锁定，防止被清理</string>
+    <string name="rom_guide_action">去设置</string>
+
+    <!-- 悬浮窗与通知 -->
+    <string name="notification_channel_name">悬浮时钟服务</string>
+    <string name="notification_channel_desc">后台悬浮时钟运行通知</string>
+    <string name="notification_title">悬浮时钟运行中</string>
+    <string name="notification_text">正在为您校准标准时间</string>
+    <string name="overlay_status_unsynced">未同步</string>
+    <string name="overlay_status_syncing">校准中</string>
+    <string name="overlay_countdown_format">%1$s %2$s</string>
+
+    <!-- 悬浮窗操作面板（单击悬浮窗展开，自动收起） -->
+    <string name="overlay_action_size">尺寸</string>
+    <string name="overlay_action_app">打开</string>
+    <string name="overlay_action_close">关闭</string>
+
+    <!-- 关于页原理说明（合规要求，必须展示） -->
+    <string name="about_principle_title">关于时间准确性</string>
+    <string name="about_principle_body">时间校准消除的是本机系统时钟的误差（常见偏差数百毫秒到数秒）。\n\n无法消除的是你到票务服务器的网络延迟（通常 20~200ms），这是物理限制。\n\n因此本应用显示的是「标准时间」，你在倒数到 0 时点击，实际请求到达服务器仍会晚一个往返延迟。建议结合网络延迟值预留提前量。\n\n本应用仅访问你启用的时间源（NTP 服务器或平台时间接口），不读取、不注入任何第三方应用的数据，不提供自动化点击能力，也不收集任何个人信息。</string>
+</resources>
