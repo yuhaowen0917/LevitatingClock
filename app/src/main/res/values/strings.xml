@@ -21,6 +21,7 @@
     <string name="clock_label_source">同步源</string>
     <string name="clock_label_rtt">网络延迟</string>
     <string name="clock_label_precision">精度</string>
+    <string name="clock_label_network">网速</string>
     <string name="clock_label_last_sync">上次同步</string>
     <string name="clock_value_unknown">—</string>
     <string name="clock_value_second_level">秒级</string>
@@ -64,7 +65,7 @@
     <string name="settings_auto_sync_interval">自动校准间隔</string>
     <string name="settings_overlay_size">悬浮窗尺寸</string>
     <string name="settings_overlay_alpha">悬浮窗透明度</string>
-    <string name="settings_show_millis">显示毫秒</string>
+    <string name="settings_show_millis">显示小数位</string>
     <string name="settings_restore_on_boot">开机自动恢复悬浮窗</string>
     <string name="settings_overlay_permission">悬浮窗权限</string>
     <string name="settings_notification_permission">通知权限</string>
@@ -73,9 +74,9 @@
     <string name="settings_permission_go">去开启</string>
     <string name="settings_version">版本</string>
 
-    <string name="size_small">小（时:分:秒）</string>
-    <string name="size_medium">中（含毫秒）</string>
-    <string name="size_large">大（含倒计时与状态）</string>
+    <string name="size_small">小（仅时间，不含小数位）</string>
+    <string name="size_medium">中（含状态与网速）</string>
+    <string name="size_large">大（字号最大，最醒目）</string>
     <string name="size_short_small">小</string>
     <string name="size_short_medium">中</string>
     <string name="size_short_large">大</string>
@@ -107,6 +108,7 @@
     <string name="overlay_status_unsynced">未同步</string>
     <string name="overlay_status_syncing">校准中</string>
     <string name="overlay_countdown_format">%1$s %2$s</string>
+    <string name="network_speed_format">↓%1$dK/s ↑%2$dK/s</string>
 
     <!-- 悬浮窗操作面板（单击悬浮窗展开，自动收起） -->
     <string name="overlay_action_size">尺寸</string>

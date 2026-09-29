@@ -69,6 +69,7 @@ class OverlayView @JvmOverloads constructor(
     private val timeView: TextView
     private val statusView: TextView
     private val countdownView: TextView
+    private val networkView: TextView
     private val actionBar: LinearLayout
 
     private var downRawX = 0f
@@ -90,6 +91,7 @@ class OverlayView @JvmOverloads constructor(
         timeView = findViewById(R.id.tv_time)
         statusView = findViewById(R.id.tv_offset)
         countdownView = findViewById(R.id.tv_countdown)
+        networkView = findViewById(R.id.tv_network)
         actionBar = findViewById(R.id.action_bar)
         bindActionButtons()
         installTouchHandler()
@@ -100,20 +102,20 @@ class OverlayView @JvmOverloads constructor(
     /**
      * 渲染时间。
      *
-     * @param epochMs    标准时间戳
-     * @param showMillis 是否显示毫秒位
-     * @param textColor  时间文字颜色
+     * @param epochMs     标准时间戳
+     * @param showTenths  是否显示小数位（十分位）
+     * @param textColor   时间文字颜色
      */
-    fun renderTime(epochMs: Long, showMillis: Boolean, textColor: Int) {
+    fun renderTime(epochMs: Long, showTenths: Boolean, textColor: Int) {
         timeView.setTextColor(textColor)
-        if (showMillis) {
+        if (showTenths) {
             val head = TimeFormat.hms(epochMs)
-            val millis = TimeFormat.millisPart(epochMs)
-            val text = "$head.$millis"
+            val tenths = TimeFormat.tenthsPart(epochMs)
+            val text = "$head.$tenths"
             val spannable = SpannableString(text)
-            // 毫秒位字号略小，降低数值跳动带来的视觉干扰
+            // 小数位字号略小，降低数值跳动带来的视觉干扰
             spannable.setSpan(
-                RelativeSizeSpan(MILLIS_RELATIVE_SCALE),
+                RelativeSizeSpan(TENTHS_RELATIVE_SCALE),
                 head.length,
                 text.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -135,6 +137,12 @@ class OverlayView @JvmOverloads constructor(
     fun renderCountdown(text: String?, visible: Boolean) {
         countdownView.text = text.orEmpty()
         countdownView.visibility = if (visible && !text.isNullOrEmpty()) View.VISIBLE else View.GONE
+    }
+
+    /** 渲染网速行（上下行） */
+    fun renderNetworkSpeed(text: String?, visible: Boolean) {
+        networkView.text = text.orEmpty()
+        networkView.visibility = if (visible && !text.isNullOrEmpty()) View.VISIBLE else View.GONE
     }
 
     /** 按尺寸档位设置时间字号 */
@@ -293,7 +301,7 @@ class OverlayView @JvmOverloads constructor(
         /** 操作面板展开后自动收起的时间 */
         const val ACTIONS_AUTO_HIDE_MS = 4_000L
 
-        /** 毫秒位相对字号 */
-        const val MILLIS_RELATIVE_SCALE = 0.72f
+        /** 小数位相对字号 */
+        const val TENTHS_RELATIVE_SCALE = 0.72f
     }
 }

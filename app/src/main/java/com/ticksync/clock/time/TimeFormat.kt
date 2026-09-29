@@ -14,39 +14,45 @@ import java.util.Locale
  */
 object TimeFormat {
 
-    private const val MILLIS_DIGITS = 3
+    /** 一位毫秒对应的毫秒数：只保留十分位 */
+    private const val MILLIS_PER_TENTH = 100
 
     @Volatile
-    private var millisFormatter = build(withMillis = true)
+    private var tenthsFormatter = build(withTenths = true)
 
     @Volatile
-    private var secondFormatter = build(withMillis = false)
+    private var secondFormatter = build(withTenths = false)
 
-    private fun build(withMillis: Boolean) = SimpleDateFormat(
-        if (withMillis) "HH:mm:ss.SSS" else "HH:mm:ss",
+    private fun build(withTenths: Boolean) = SimpleDateFormat(
+        if (withTenths) "HH:mm:ss.S" else "HH:mm:ss",
         Locale.getDefault()
     )
 
     /** 时区 / 系统时间变更后调用，强制重建格式化实例。 */
     @Synchronized
     fun reset() {
-        millisFormatter = build(withMillis = true)
-        secondFormatter = build(withMillis = false)
+        tenthsFormatter = build(withTenths = true)
+        secondFormatter = build(withTenths = false)
     }
 
-    /** 格式化为 `HH:mm:ss.SSS` */
+    /**
+     * 格式化为 `HH:mm:ss.S`。
+     *
+     * 毫秒只保留一位：抢票的决策粒度是零点几秒，后两位纯粹是视觉噪声，
+     * 省下来的宽度还能换成更大的字号。
+     */
     @Synchronized
-    fun hmsSSS(epochMs: Long): String = millisFormatter.format(Date(epochMs))
+    fun hmsS(epochMs: Long): String = tenthsFormatter.format(Date(epochMs))
 
     /** 格式化为 `HH:mm:ss` */
     @Synchronized
     fun hms(epochMs: Long): String = secondFormatter.format(Date(epochMs))
 
-    /** 仅毫秒部分，三位补零，如 `045`。用于拼接小字号的毫秒位。 */
-    fun millisPart(epochMs: Long): String {
+    /** 仅十分位，一位数字如 `4`。用于拼接小字号的小数位。 */
+    fun tenthsPart(epochMs: Long): String {
         val raw = (epochMs % 1000).toInt()
         val v = if (raw < 0) raw + 1000 else raw
-        return v.toString().padStart(MILLIS_DIGITS, '0')
+        return (v / MILLIS_PER_TENTH).toString()
     }
 
     /** 格式化倒计时 `HH:mm:ss.S`，不足一小时时省略小时段。 */
@@ -56,7 +62,7 @@ object TimeFormat {
         val hours = totalSeconds / 3600
         val minutes = (totalSeconds % 3600) / 60
         val seconds = totalSeconds % 60
-        val tenths = (safe % 1000) / 100
+        val tenths = (safe % 1000) / MILLIS_PER_TENTH
         val head = if (hours > 0) {
             String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds)
         } else {

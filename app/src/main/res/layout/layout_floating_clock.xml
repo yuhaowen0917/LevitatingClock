@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   悬浮窗布局：三档尺寸复用同一布局，由 OverlayController 控制各行可见性
-    小：仅 tv_time（HH:mm:ss）
-    中：tv_time（含毫秒）
-    大：tv_time + tv_countdown + tv_offset
+    小：仅 tv_time
+    中：tv_time（含十分位）+ tv_offset + tv_network
+    大：同上，但字号最大
+
+  tv_countdown 是例外：它由「是否启用倒计时」决定，不受尺寸档位限制——
+  倒计时是用户主动开启的，开了就该看得见。
 
   action_bar 是单击悬浮窗后展开的操作面板：尺寸 / 打开 / 关闭。
   它之所以画在窗口内部而不是用 PopupWindow，是为了不引入第二个窗口——
@@ -26,7 +29,7 @@
         android:fontFamily="monospace"
         android:includeFontPadding="false"
         android:letterSpacing="0.02"
-        android:text="00:00:00.000"
+        android:text="00:00:00.0"
         android:textColor="@color/overlay_text_time"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -52,6 +55,19 @@
         android:text="@string/overlay_status_syncing"
         android:textColor="@color/overlay_text_offset"
         android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tv_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:fontFamily="monospace"
+        android:includeFontPadding="false"
+        android:textColor="@color/overlay_text_offset"
+        android:textSize="10sp"
+        android:visibility="gone"
+        tools:text="↓128K/s ↑12K/s"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/action_bar"

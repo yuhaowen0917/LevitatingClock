@@ -222,7 +222,7 @@ private fun LiveClock(viewModel: ClockViewModel) {
     val fontSize = rememberAdaptiveClockSize()
 
     Text(
-        text = TimeFormat.hmsSSS(nowMs),
+        text = TimeFormat.hmsS(nowMs),
         fontSize = fontSize,
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Bold,
@@ -494,6 +494,7 @@ private fun StatusCard(
                     else stringResource(R.string.clock_value_unknown)
                 )
             }
+            StatusRow(stringResource(R.string.clock_label_network)) { LiveNetworkSpeedText(viewModel) }
             if (syncState.precisionMs > 1L) {
                 StatusRow(stringResource(R.string.clock_label_precision)) {
                     StatusValue(stringResource(R.string.clock_value_second_level))
@@ -504,6 +505,13 @@ private fun StatusCard(
             }
         }
     }
+}
+
+/** 实时网速。1 秒一次，重组同样隔离在这个小节点内。 */
+@Composable
+private fun LiveNetworkSpeedText(viewModel: ClockViewModel) {
+    val speed by viewModel.networkSpeed.collectAsStateWithLifecycle()
+    StatusValue(stringResource(R.string.network_speed_format, speed.downKBps, speed.upKBps))
 }
 
 /** 实时偏差。按秒刷新，把重组隔离在这个小节点内。 */
@@ -635,8 +643,8 @@ private fun SyncQuality.color(): Color = when (this) {
     SyncQuality.DEVICE -> StatusStale
 }
 
-/** "00:00:00.000" 共 12 个字符 */
-private const val CLOCK_CHAR_COUNT = 12
+/** "00:00:00.0" 共 10 个字符 */
+private const val CLOCK_CHAR_COUNT = 10
 
 /** 等宽字体字符宽 / 字号 的近似比值 */
 private const val MONO_CHAR_WIDTH_RATIO = 0.62f

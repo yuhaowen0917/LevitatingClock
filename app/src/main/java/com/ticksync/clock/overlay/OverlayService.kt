@@ -29,6 +29,7 @@ import com.ticksync.clock.time.ClockEngine
 import com.ticksync.clock.time.SyncState
 import com.ticksync.clock.time.TimeFormat
 import com.ticksync.clock.time.TimeSyncManager
+import com.ticksync.clock.util.NetworkSpeedMeter
 import com.ticksync.clock.util.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -214,8 +215,20 @@ class OverlayService : Service() {
             epochMs = now,
             statusText = buildStatusText(),
             statusColor = statusColor(),
-            countdownText = countdownTarget.takeIf { it > 0L }?.let { formatCountdown(it, now) }
+            countdownText = countdownTarget.takeIf { it > 0L }?.let { formatCountdown(it, now) },
+            networkSpeedText = buildNetworkSpeedText()
         )
+    }
+
+    /**
+     * 网速文案。
+     *
+     * SMALL 档不显示这一行，那就连采样都省掉——每帧读一次流量计数器没有意义。
+     */
+    private fun buildNetworkSpeedText(): String? {
+        if (currentSettings.overlaySize == OverlaySize.SMALL) return null
+        val speed = NetworkSpeedMeter.sample()
+        return getString(R.string.network_speed_format, speed.downKBps, speed.upKBps)
     }
 
     private fun buildStatusText(): String {

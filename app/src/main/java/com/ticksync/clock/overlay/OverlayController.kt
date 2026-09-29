@@ -86,36 +86,31 @@ class OverlayController(private val context: Context) {
     // ------------------------------------------------------------ 渲染
 
     /**
-     * 渲染一帧内容。各行的可见性由当前尺寸档位决定：
-     * - SMALL：仅时间（`HH:mm:ss`）
-     * - MEDIUM：时间（可含毫秒）+ 校准状态
-     * - LARGE：时间 + 倒计时 + 校准状态
+     * 渲染一帧内容。
+     *
+     * 可见性规则分两类：
+     * - **状态行与网速行**由尺寸档位决定——SMALL 档的诉求是尽量少占地，辅助行一律不显示；
+     * - **倒计时行**只由"是否启用倒计时"决定，不再看档位。倒计时是用户主动开启的，
+     *   开了就应该看得见，被档位悄悄藏起来是说不通的。
      */
-    fun render(epochMs: Long, statusText: String, statusColor: Int, countdownText: String? = null) {
+    fun render(
+        epochMs: Long,
+        statusText: String,
+        statusColor: Int,
+        countdownText: String? = null,
+        networkSpeedText: String? = null
+    ) {
         val view = overlayView ?: return
         val settings = currentSettings
-        val showStatus: Boolean
-        val showCountdown: Boolean
 
-        when (settings.overlaySize) {
-            OverlaySize.SMALL -> {
-                showStatus = false
-                showCountdown = false
-            }
-            OverlaySize.MEDIUM -> {
-                showStatus = true
-                showCountdown = false
-            }
-            OverlaySize.LARGE -> {
-                showStatus = true
-                showCountdown = true
-            }
-        }
+        val showAuxiliary = settings.overlaySize != OverlaySize.SMALL
+        val showCountdown = !countdownText.isNullOrEmpty()
+        val showTenths = settings.showMillis && showAuxiliary
 
-        val showMillis = settings.showMillis && settings.overlaySize != OverlaySize.SMALL
-        view.renderTime(epochMs, showMillis, settings.overlayTextColor)
-        view.renderStatus(statusText, showStatus, statusColor)
+        view.renderTime(epochMs, showTenths, settings.overlayTextColor)
+        view.renderStatus(statusText, showAuxiliary, statusColor)
         view.renderCountdown(countdownText, showCountdown)
+        view.renderNetworkSpeed(networkSpeedText, showAuxiliary)
     }
 
     // ------------------------------------------------------------ 设置应用

@@ -14,6 +14,8 @@ import com.ticksync.clock.time.SyncState
 import com.ticksync.clock.time.TimeSource
 import com.ticksync.clock.time.TimeSourceCatalog
 import com.ticksync.clock.time.TimeSyncManager
+import com.ticksync.clock.util.NetworkSpeed
+import com.ticksync.clock.util.NetworkSpeedMeter
 import com.ticksync.clock.util.NetworkUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -88,6 +90,19 @@ class ClockViewModel(application: Application) : AndroidViewModel(application) {
         if (!current.countdown.enabled) NO_COUNTDOWN
         else (current.countdown.nextTargetMs(now) - now).coerceAtLeast(0L)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIBE_TIMEOUT_MS), NO_COUNTDOWN)
+
+    /**
+     * 实时网速。
+     *
+     * 1 秒一次就够：它是给用户判断"网络通不通、快不快"的，
+     * 不需要逐帧精度，流量计数器也不该按帧去读。
+     */
+    val networkSpeed: StateFlow<NetworkSpeed> = flow {
+        while (true) {
+            emit(NetworkSpeedMeter.sample())
+            delay(NETWORK_SPEED_TICK_MS)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIBE_TIMEOUT_MS), NetworkSpeed.ZERO)
 
     /** 校准状态分级，驱动状态卡片配色 */
     val quality: StateFlow<SyncQuality> = combine(_syncState, nowMs, _online) { state, now, online ->
@@ -203,6 +218,9 @@ class ClockViewModel(application: Application) : AndroidViewModel(application) {
 
         /** 倒计时刷新间隔：十分之一秒的显示精度，100ms 足够 */
         private const val COUNTDOWN_TICK_MS = 100L
+
+        /** 网速刷新间隔：1 秒级足够反映"网通不通"，也避免频繁读取流量计数器 */
+        private const val NETWORK_SPEED_TICK_MS = 1_000L
 
         private const val OVERLAY_STATE_POLL_MS = 500L
 
